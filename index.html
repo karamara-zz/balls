@@ -8,11 +8,29 @@
 	<svg id="svg" xmlns="http://www.w3.org/2000/svg" style='height:100%; width:100%;'></svg>
 
 	<script>
+
+		var mousedown_time;
+
+		function getTime(){
+			var date = new Date();
+			return date.getTime();
+		}
+
+		document.onmousedown = function(e){
+			mousedown_time = getTime();
+		}
+		document.onmouseup = function(e){
+			time_pressed = getTime() - mousedown_time;
+			console.log('You held your mouse down for', time_pressed, 'miliseconds.');
+		}
+
+		//technically we don't even need the mousedown variable but we're leaving it there for now..
+
+
 	function Circle(cx, cy, html_id)
 	{
 		var html_id = html_id;
-		this.info = { cx: cx,  cy: cy };
-		
+		this.info = { cx: cx,  cy: cy ,radius:30};
 		//private function that generates a random number
 		var randomNumberBetween = function(min, max){
 			return Math.random()*(max-min) + min;
@@ -29,39 +47,37 @@
 			var circle = makeSVG('circle', 
 				{ 	cx: this.info.cx,
 				  	cy: this.info.cy,
-				  	r:  10,
+				  	r:  this.info.radius,
 				  	id: html_id,
 				  	style: "fill: gray;"
 				});
-			this.info.circle=circle;
-			console.log(this.info.circle)
+
 
 			document.getElementById('svg').appendChild(circle);
 		}
 
 		this.update = function(time){
 			var el = document.getElementById(html_id);
-			console.log(this.info.circle['r']);
 
 			//see if the circle is going outside the browser. if it is, reverse the velocity
-			if( this.info.cx+10 >= document.body.clientWidth)
+			if( this.info.cx+this.info.radius >= document.body.clientWidth)
 				{
-				this.info.cx = document.body.clientWidth-11;
+				this.info.cx = document.body.clientWidth-this.info.radius-1;
 				this.info.velocity.x = this.info.velocity.x * -1;
 			}
-			if(this.info.cx <= 10)
+			if(this.info.cx <= this.info.radius)
 			{
-				this.info.cx = 11;
+				this.info.cx = this.info.radius+1;
 				this.info.velocity.x = this.info.velocity.x * -1;
 			}
-			if( this.info.cy+10 >= document.body.clientHeight)
+			if( this.info.cy+this.info.radius >= document.body.clientHeight)
 			{
-				this.info.cy = document.body.clientHeight-11;
+				this.info.cy = document.body.clientHeight-this.info.radius-1;
 				this.info.velocity.y = this.info.velocity.y * -1;
 			}
-			if (this.info.cy <= 10)
+			if (this.info.cy <= this.info.radius)
 				{
-				this.info.cy = 11;
+				this.info.cy = this.info.radius+1;
 				this.info.velocity.y = this.info.velocity.y * -1;
 			}
 
