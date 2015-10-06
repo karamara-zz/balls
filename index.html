@@ -3,8 +3,9 @@
 	<title>Javascript Box - OOP demo</title>
 </head>
 <body>
-
-	<svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+<style>*{margin:0px;
+}</style>
+	<svg id="svg" xmlns="http://www.w3.org/2000/svg" style='height:100%; width:100%;'></svg>
 
 	<script>
 	function Circle(cx, cy, html_id)
@@ -30,24 +31,40 @@
 				  	cy: this.info.cy,
 				  	r:  10,
 				  	id: html_id,
-				  	style: "fill: black"
+				  	style: "fill: gray;"
 				});
+			this.info.circle=circle;
+			console.log(this.info.circle)
 
 			document.getElementById('svg').appendChild(circle);
 		}
 
 		this.update = function(time){
 			var el = document.getElementById(html_id);
+			console.log(this.info.circle['r']);
 
 			//see if the circle is going outside the browser. if it is, reverse the velocity
-			if( this.info.cx > document.body.clientWidth || this.info.cx < 0)
-			{
+			if( this.info.cx+10 >= document.body.clientWidth)
+				{
+				this.info.cx = document.body.clientWidth-11;
 				this.info.velocity.x = this.info.velocity.x * -1;
 			}
-			if( this.info.cy > document.body.clientHeight || this.info.cy < 0)
+			if(this.info.cx <= 10)
 			{
+				this.info.cx = 11;
+				this.info.velocity.x = this.info.velocity.x * -1;
+			}
+			if( this.info.cy+10 >= document.body.clientHeight)
+			{
+				this.info.cy = document.body.clientHeight-11;
 				this.info.velocity.y = this.info.velocity.y * -1;
 			}
+			if (this.info.cy <= 10)
+				{
+				this.info.cy = 11;
+				this.info.velocity.y = this.info.velocity.y * -1;
+			}
+
 
 			this.info.cx = this.info.cx + this.info.velocity.x*time;
 			this.info.cy = this.info.cy + this.info.velocity.y*time;
@@ -93,7 +110,7 @@
 	}
 
 	var playground = new PlayGround();
-	setInterval(playground.loop, 15);
+	setInterval(playground.loop, 10);
 
 	document.onclick = function(e) {
 		playground.createNewCircle(e.x,e.y);
