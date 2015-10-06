@@ -27,14 +27,23 @@
 			}
 
 			//create a circle 
+			console.log(radius)
+			var color = "green";
+			if (radius > 20 && radius<40){
+				color="Orange";
+			} else if (radius >=40 && radius<60){
+				color="red"
+			}
+			else if (radius >= 60){
+				color="black";
+			}
 			var circle = makeSVG('circle', 
 				{ 	cx: this.info.cx,
 				  	cy: this.info.cy,
 				  	r:  this.info.radius,
 				  	id: html_id,
-				  	style: "fill: gray;"
+				  	style: "fill: "+color+";"
 				});
-
 
 			document.getElementById('svg').appendChild(circle);
 		}
@@ -94,7 +103,9 @@
 		this.loop = function(){
 			for(circle in circles)
 			{
+				console.log[circle]
 				circles[circle].update(1);
+
 			}
 		}
 
