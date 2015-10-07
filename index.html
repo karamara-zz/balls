@@ -105,10 +105,17 @@
 					if (otherCircle !== circle){
 					var oC=circles[otherCircle].info;
 					if ((cC.radius+oC.radius)>Math.sqrt(Math.pow(cC.cx-oC.cx,2)+Math.pow(cC.cy-oC.cy,2))){
-						console.log("collision!!");
-						delete circles[circle];
-						delete circles[otherCircle];
-						$('#'+otherCircle).remove();
+						if (cC.radius>oC.radius){
+							$("#"+otherCircle).attr("r",oC.radius+cC.radius);
+							circles[otherCircle].info.radius=oC.radius+cC.radius;
+							console.log(otherCircle[circle])
+							$('#'+circle).remove();
+							delete circles[circle];
+						}else if (cC.radius<oC.radius){
+							$("#"+circle).attr("r",oC.radius+cC.radius);
+							circles[circle].info.radius=oC.radius+cC.radius;
+							$('#'+otherCircle).remove();
+							delete circles[otherCircle]}
 					}
 				}};
 				if (circles[circle]==undefined){
