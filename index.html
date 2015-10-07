@@ -50,6 +50,8 @@
 
 		this.update = function(time){
 			var el = document.getElementById(html_id);
+			console.log("update")
+			console.log(this.info.radius)
 
 			//see if the circle is going outside the browser. if it is, reverse the velocity
 			if( this.info.cx+this.info.radius >= document.body.clientWidth)
@@ -72,14 +74,12 @@
 				this.info.cy = this.info.radius+1;
 				this.info.velocity.y = this.info.velocity.y * -1;
 			}
-
-
 			this.info.cx = this.info.cx + this.info.velocity.x*time;
 			this.info.cy = this.info.cy + this.info.velocity.y*time;
 
 			el.setAttribute("cx", this.info.cx);
 			el.setAttribute("cy", this.info.cy);
-		} 
+		}
 
 		//creates the SVG element and returns it
 		var makeSVG = function(tag, attrs) {
@@ -105,15 +105,12 @@
 			{
 				console.log[circle]
 				circles[circle].update(1);
-
 			}
 		}
 
 		this.createNewCircle = function(x,y,radius){
 			var new_circle = new Circle(x,y,radius,counter++);
 			circles.push(new_circle);
-			console.log('created a new circle!', new_circle);
-			console.log(circles)
 		}
 
 		//create one circle when the game starts
@@ -121,7 +118,7 @@
 	}
 
 	var playground = new PlayGround();
-	setInterval(playground.loop, 10);
+	setInterval(playground.loop, 1000);
 	var mousedown_time;
 
 		function getTime(){
