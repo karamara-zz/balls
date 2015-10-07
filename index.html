@@ -6,7 +6,7 @@
 <style>*{margin:0px;
 }</style>
 	<svg id="svg" xmlns="http://www.w3.org/2000/svg" style='height:100%; width:100%;'></svg>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>
 
 
@@ -27,7 +27,6 @@
 			}
 
 			//create a circle 
-			console.log(radius)
 			var color = "green";
 			if (radius > 20 && radius<40){
 				color="Orange";
@@ -50,8 +49,6 @@
 
 		this.update = function(time){
 			var el = document.getElementById(html_id);
-			console.log("update")
-			console.log(this.info.radius)
 
 			//see if the circle is going outside the browser. if it is, reverse the velocity
 			if( this.info.cx+this.info.radius >= document.body.clientWidth)
@@ -103,8 +100,23 @@
 		this.loop = function(){
 			for(circle in circles)
 			{
-				console.log[circle]
+				var cC=circles[circle].info;
+				for (otherCircle in circles){
+					if (otherCircle !== circle){
+					var oC=circles[otherCircle].info;
+					if ((cC.radius+oC.radius)>Math.sqrt(Math.pow(cC.cx-oC.cx,2)+Math.pow(cC.cy-oC.cy,2))){
+						console.log("collision!!");
+						delete circles[circle];
+						delete circles[otherCircle];
+						$('#'+otherCircle).remove();
+					}
+				}};
+				if (circles[circle]==undefined){
+					$('#'+circle).remove();
+				}
+				if (circles[circle]){
 				circles[circle].update(1);
+			}
 			}
 		}
 
@@ -118,7 +130,7 @@
 	}
 
 	var playground = new PlayGround();
-	setInterval(playground.loop, 1000);
+	setInterval(playground.loop, 10);
 	var mousedown_time;
 
 		function getTime(){
@@ -131,7 +143,7 @@
 		}
 		document.onmouseup = function(e){
 			time_pressed = getTime() - mousedown_time;
-			var radius=time_pressed/5;
+			var radius=time_pressed/7;
 			playground.createNewCircle(e.x,e.y,radius);
 		}
 
